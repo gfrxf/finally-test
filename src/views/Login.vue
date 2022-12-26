@@ -5,7 +5,7 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
         <el-form-item  prop="account">
           <div class="account">
-            <i class="el-icon-user"></i>
+            <i class="el-icon-user" ></i>
             <el-input v-model="ruleForm.account" placeholder="请输入内容"></el-input>
           </div>
         </el-form-item>
@@ -23,6 +23,10 @@
 
       <div class="logbtn">
         <el-button class="lbtn" size="mediun" type="primary">登录</el-button>
+        <!-- <el-button class="lbtn" size="mediun" type="success">登录</el-button> -->
+        <!-- <el-button class="lbtn" size="mediun" type="info">登录</el-button> -->
+        <!-- <el-button class="lbtn" size="mediun" type="warning">登录</el-button> -->
+        <!-- <el-button class="lbtn" size="mediun" type="danger">登录</el-button> -->
       </div>
     </div>
   </div>
@@ -79,13 +83,23 @@ export default {
       justify-content: center;
       align-items: center;
       padding: 10px;
+      .el-icon-user{
+        margin-right: 10px;
+      }
+     
     }
+    .account /deep/ .el-form-item__error{
+        margin-left: 16px !important; 
+      }
     .password {
       margin-top: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 10px;
+      .el-icon-edit{
+        margin-right: 10px;
+      }
     }
     .logbtn {
       width: 100%;
