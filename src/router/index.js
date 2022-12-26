@@ -21,8 +21,8 @@ const routes = [
     component: () => import("../views/HomeView.vue")
   },
   {
-    path: '/addNewCt',
-    name: 'addNewCt',
+    path: '/addnewct',
+    name: 'addnewct',
     component: () => import("../views/AddNewCt.vue")
   },
   {
