@@ -2,7 +2,7 @@
   <div class="addNewCt">
     <div class="topDiv">添加联系人</div> 
     <!-- 头像上传区域 -->
-   
+    
     <!-- 表单区域 -->
     <el-form size="small" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="姓名" prop="name">
