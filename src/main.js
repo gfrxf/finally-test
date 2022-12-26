@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui';
+import Axios from 'axios';
+//将axios挂在到Vue的实例上
+Vue.prototype.$axios = Axios 
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.config.productionTip = false
