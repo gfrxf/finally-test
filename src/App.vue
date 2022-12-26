@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/"></router-link> 
+      <!-- <router-link to="/about">About</router-link> -->
     </nav>
     <router-view/>
   </div>
@@ -16,17 +16,25 @@
   text-align: center;
   color: #2c3e50;
 }
+* {
+    margin: 0;
+    padding: 0;
+}
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+a {
+    color: #000;
+    text-decoration: none;
+}
+i {
+    display: block;
+    font-style: normal;
+}
+input {
+    vertical-align: middle;
+    border-radius: 0;
+}
+ul,
+li {
+    list-style-type: none;
 }
 </style>
