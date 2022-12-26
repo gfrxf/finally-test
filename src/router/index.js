@@ -11,6 +11,11 @@ const routes = [
     component: () => import("../views/Login.vue")
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import("../views/Login.vue")
+  },
+  {
     path: '/home',
     name: 'home',
     component: () => import("../views/HomeView.vue")
@@ -30,5 +35,12 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+// router.beforeEach((to) =>{
+//   const token = localStorage.getItem("token")
+//   if(!token){
+//     return "/login"
+//   }
+
+// })
 
 export default router
