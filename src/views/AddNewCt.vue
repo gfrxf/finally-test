@@ -1,6 +1,8 @@
 <template>
   <div class="addNewCt">
     <div class="topDiv">这是AddNewCt</div> 
+    <!-- 表单区域 -->
+    
   </div>
 </template>
 
