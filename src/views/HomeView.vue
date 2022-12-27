@@ -20,8 +20,8 @@
         class="serchinput"
         placeholder="搜索"
       ></el-input>
-      <i class="el-icon-search"></i>
-      <el-select v-model="value" placeholder="全部">
+      <i class="el-icon-search" size="medium"></i>
+      <el-select v-model="value" class="select" placeholder="全部">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -30,6 +30,9 @@
         >
         </el-option>
       </el-select>
+      <i class="el-icon-circle-plus-outline"></i>
+      <i class="el-icon-remove-outline"></i>
+      <i class="el-icon-setting"></i>
     </div>
   </div>
 </template>
@@ -134,11 +137,19 @@ export default {
   .searchcontent {
     display: flex;
     align-items: center;
+    justify-content: space-around;
     margin-top: 20px;
 
     .serchinput {
       width: 150px;
-      margin-right: 20px;
+      margin-right: -10px;
+    }
+    .el-icon-search{
+      // width: 30px;
+      // height: 30px;
+    }
+    .select{
+      width: 100px;
     }
   }
 }
