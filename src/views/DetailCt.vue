@@ -50,9 +50,10 @@
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">更新</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
+      <el-button type="primary" @click="goToEvent">事项</el-button>
     </el-form-item>
   </el-form>
-  <el-button type="primary" @click="goToEvent">事项</el-button>
+
     </div>
   </template>
   
@@ -135,8 +136,9 @@
         },
         // 请求数据
         async getUserInfo(){
+          console.log(this.$route.params?.ctId)
           const { data: res } = await this.$axios.get('/userInfo/detailCt', {
-            ctId:this.$router.params.ctId
+            ctId:this.$route.params?.ctId
           })
           this.ruleForm.name = res.data.ctName
           this.ruleForm.address = res.data.ctAd 
@@ -164,7 +166,7 @@
           this.$router.push('/home')
         },
         goToEvent(){
-          this.$router.push('/')
+          this.$router.push({path:'/warn',query:{ctId:this.$route.params?.ctId}})
         }
   
    },
