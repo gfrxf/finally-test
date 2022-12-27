@@ -36,9 +36,9 @@
       ></i>
       <i
         class="el-icon-remove-outline"
-        @click="$router.push({ path: '/about',query:{ctid} })"
+        @click="toPageAddMatter"
       ></i>
-      <i class="el-icon-setting" @click="$router.push({ path: '/warn',query:{ctid} })"></i>
+      <i class="el-icon-setting" @click="this.$router.push({ path: '/warn',query:{ctid} })"></i>
     </div>
     <div class="tablecontent">
       <i class="el-icon-top"></i>
@@ -119,7 +119,15 @@ export default {
     };
   },
   methods: {
-    toPageAddMatter() {},
+    toPageAddMatter() {
+      console.log(this.ctid);
+     this.$router.push({
+      path:'about',
+      query:{
+        ctid:this.ctid
+      }
+     })
+    },
   },
   created() {
     //和风天气插件调用

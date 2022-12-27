@@ -109,7 +109,7 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.params.ctid, "ctid");
+    // console.log(this.$route.params.ctid, "ctid");
     //和风天气插件调用
     window.WIDGET = {
       CONFIG: {
@@ -135,6 +135,9 @@ export default {
       sn.parentNode.insertBefore(s, sn);
     })(document);
   },
+  mounted(){
+    console.log(this.$route.query.ctid, "ctid");
+  }
   //   mounted:{
 
   //   }
