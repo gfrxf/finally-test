@@ -35,6 +35,8 @@
         <i class="el-icon-setting"></i> -->
     </div>
     <div class="tablecontent">
+      <i class="el-icon-top"></i>
+      <i class="el-icon-bottom"></i>
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column fixed prop="name" label="姓名" width="168">
         </el-table-column>
@@ -107,7 +109,7 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.params.ctid,'ctid');
+    console.log(this.$route.params.ctid, "ctid");
     //和风天气插件调用
     window.WIDGET = {
       CONFIG: {
@@ -133,9 +135,9 @@ export default {
       sn.parentNode.insertBefore(s, sn);
     })(document);
   },
-//   mounted:{
+  //   mounted:{
 
-//   }
+  //   }
 };
 </script>
 
@@ -206,8 +208,25 @@ export default {
   }
   .tablecontent {
     margin-top: 40px;
+    position: relative;
+    .el-icon-top {
+      width: 15px;
+      height: 15px;
+      position: absolute;
+      z-index: 99;
+      left: 10%;
+      top: 2%;
+    }
+    .el-icon-bottom {
+      width: 15px;
+      height: 15px;
+      position: absolute;
+      z-index: 99;
+      left: 10%;
+      top: 13%;
+    }
   }
-  .pagination{
+  .pagination {
     margin-top: 40px;
   }
 }
