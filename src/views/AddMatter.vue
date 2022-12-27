@@ -4,43 +4,19 @@
         <!-- <img class="back_home" @click="backHome" src="//yun.duiba.com.cn/polaris/close.6096642d7897de46ebdbf325b7285f4eaf15b339.png" alt=""> -->
       </div> 
       <!-- 头像上传区域 -->
-    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+    <img :src="ruleForm.imageUrl" class="avatar">
       <!-- 表单区域 -->
       <el-form size="small" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="姓名" prop="name">
-      <el-input class="inputLength" v-model="ruleForm.name" placeholder="姓名"></el-input>
-    </el-form-item>
-    <el-form-item label="地址" prop="address">
-      <el-input v-model="ruleForm.address" placeholder="地址"></el-input>
-    </el-form-item>
-    <el-form-item label="邮箱" prop="email">
-      <el-input v-model="ruleForm.email" placeholder="邮箱"></el-input>
-    </el-form-item>
-    <el-form-item label="QQ" prop="QQ">
-      <el-input v-model="ruleForm.QQ" placeholder="QQ"></el-input>
-    </el-form-item>
-    <el-form-item label="微信" prop="WeiXin">
-      <el-input v-model="ruleForm.WeiXin" placeholder="微信"></el-input>
-    </el-form-item>
-    <el-form-item label="邮编" prop="postalCode">
-      <el-input v-model="ruleForm.postalCode" placeholder="邮编"></el-input>
-    </el-form-item>
-    <el-form-item class="selectCssBox" label="性别" prop="sex">
-      <el-select class="selectCss" v-model="ruleForm.region" placeholder="性别">
-        <el-option label="男" value="男"></el-option>
-        <el-option label="女" value="女"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item  class="selectCssBox" label="生日" required>
+    <el-form-item  class="selectCssBox" label="日期" required>
         <el-form-item prop="date1">
           <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 180px"></el-date-picker>
         </el-form-item>
     </el-form-item>
-    <el-form-item label="电话" prop="phoneNumber">
-      <el-input v-model="ruleForm.phoneNumber" placeholder="电话"></el-input>
+    <el-form-item label="事件" prop="phoneNumber">
+      <el-input v-model="ruleForm.phoneNumber" placeholder="事件"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">添加事项</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
     </el-form-item>
   </el-form>
@@ -55,47 +31,17 @@
     data() {
         return {
           ruleForm: {
-            name: '',
-            address:"",
-            region: '',
-            email:"",
-            QQ:"",
-            WeiXin:"",
-            postalCode:"",
             phoneNumber:"",
             date1: '', // 出生日期
-            imageUrl:"",
+            imageUrl:"https://yun.duiba.com.cn/polaris/lQLPJyF0jznlPWzMyMzIsFHp1wjauc7pA6YD8T9ASQA_200_200.png_720x720g.2bf6c336cad1e016669b358ce5d2f3320324b198.jpg",
           },
           
           rules: {
-            name: [
-              { required: true, message: '请输入姓名', trigger: 'blur' },
-              { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
-            ],
-            address:[
-              { message: '请输入地址', trigger: 'blur' },
-            ],
-            email:[
-              { required: true, message: '请输入邮箱', trigger: 'blur' },
-            ],
-            QQ:[
-              { message: '请输入QQ号', trigger: 'blur' },
-            ],
-            WeiXin:[
-              { message: '请输入微信号', trigger: 'blur' },
-            ],
-            postalCode:[
-              { message: '请输入邮编', trigger: 'blur' },
-              { min: 6, max: 6, message: '长度应为6个字符', trigger: 'blur' }
-            ],
-            sex:[
-              {message: '请选择性别', trigger: 'change' },
-            ],
             phoneNumber:[
               { required: true, message: '请输入电话号码', trigger: 'blur' },
             ],
             date1: [
-              { type: 'date', message: '请选择日期', trigger: 'change' }
+              { required: true,type: 'date', message: '请选择日期', trigger: 'blur' }
             ],
           }
         }
@@ -103,32 +49,31 @@
     methods: {
         // 表单提交
         async submitForm(formName) {
-          // this.ruleForm = {...this.ruleForm,ctImg:this.tartImg}
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              let params=this.ruleForm
-              let url='/addContact'
-              this.$axios.post(url,params).then(res =>{
-                console.log('请求成功')
-                console.log(res)
-              }).catch(error =>{
-                console.log('请求失败')
-                console.log(error )
-              })
-            } else {
-              console.log('error submit!!');
-              return false;
-            }
-          });
+          /**
+          if(this.ruleForm.date1 == ""){
+            this.$message.error('请选择日期')
+            return
+          }
+          if(this.ruleForm.phoneNumber == ""){
+            this.$message.error('请输入事项')
+            return
+          }
+           */
+          try{
+            const { data: res } = await this.$axios.post('/userInfo/listContracts', {
+              matterTime: this.ruleForm.date1,
+              matter: this.ruleForm.phoneNumber,
+              ctId:this.$route.params?.ctId
+            })
+            if (res.code !== 200) return this.$message.error('添加失败')
+            this.$message.success('添加成功')
+          }catch(e){
+            console.log(e)
+          } 
         },
         // 表单预校验
         resetForm(formName) {
           this.$refs[formName].resetFields();
-        },
-  
-        handleAvatarSuccess(res, file) {
-          this.imageUrl = URL.createObjectURL(file.raw);
-          console.log(this.imageUrl)
         },
   
         backHome(){
@@ -147,31 +92,14 @@
   @import url(../App.less);
   .AddMatter{
       width: 500px;
-      height: 720px;
-      background-color:@addNewCtBg;
+      height: 420px;
+      background-color:@addMatterBg;
       margin: auto;
-      .avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-      }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409EFF;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 178px;
-      height: 178px;
-      line-height: 178px;
-      text-align: center;
-    }
     .avatar {
-      width: 178px;
-      height: 178px;
+      width: 150px;
+      height: 150px;
       display: block;
+      margin: 20px auto;
     }
       .el-form-item{
         text-align: left !important;
@@ -184,7 +112,7 @@
         height: 40px;
         line-height: 40px;
         text-align: center;
-        background-color: @addNewCtTop;
+        background-color: @addMatterTop;
         margin-bottom: 20px;
         position: relative;
         .back_home{
