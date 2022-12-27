@@ -52,6 +52,7 @@
       <el-button @click="resetForm('ruleForm')">重置</el-button>
     </el-form-item>
   </el-form>
+  <el-button type="primary" @click="goToEvent">事项</el-button>
     </div>
   </template>
   
@@ -106,6 +107,9 @@
           }
         }
     },
+    async created(){
+      await this.getUserInfo()
+    },
     methods: {
         // 表单提交
         async submitForm(formName) {
@@ -129,6 +133,22 @@
             }
           });
         },
+        // 请求数据
+        async getUserInfo(){
+          const { data: res } = await this.$axios.get('/userInfo/detailCt', {
+            ctId:this.$router.params.ctId
+          })
+          this.ruleForm.name = res.data.ctName
+          this.ruleForm.address = res.data.ctAd 
+          this.ruleForm.postalCode = res.data.ctyb
+          this.ruleForm.QQ = res.data.ctQq
+          this.ruleForm.WeiXin = res.data.ctWx
+          this.ruleForm.email = res.data.ctEm
+          this.ruleForm.sex = res.data.ctMf
+          this.ruleForm.date1 = res.data.ctBirth
+          this.ruleForm.phoneNumber = res.data.ctPhone
+          this.ruleForm.imageUrl = res.data.ctImg
+        },
         // 表单预校验
         resetForm(formName) {
           this.$refs[formName].resetFields();
@@ -143,6 +163,9 @@
           console.log(111)
           this.$router.push('/home')
         },
+        goToEvent(){
+          this.$router.push('/')
+        }
   
    },
     components: {

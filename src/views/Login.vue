@@ -60,9 +60,15 @@ export default {
   },
   methods:{
     async login() {
-      console.log(2222)
+      // if(this.ruleForm.account == ""){
+      //   this.$message.error('请输入用户名')
+      //   return
+      // }
+      // if(this.ruleForm.pass == ""){
+      //   this.$message.error('请输入密码')
+      //   return
+      // }
       try{
-        console.log(111)
         const { data: res } = await this.$axios.post('/login/login', {
           userId: this.ruleForm.account,
           userPassword: this.ruleForm.pass
