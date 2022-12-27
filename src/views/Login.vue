@@ -22,7 +22,7 @@
       </el-form>
 
       <div class="logbtn">
-        <el-button class="lbtn" size="mediun" type="primary">登录</el-button>
+        <el-button class="lbtn" size="mediun" type="primary" @click="login">登录</el-button>
         <!-- <el-button class="lbtn" size="mediun" type="success">登录</el-button> -->
         <!-- <el-button class="lbtn" size="mediun" type="info">登录</el-button> -->
         <!-- <el-button class="lbtn" size="mediun" type="warning">登录</el-button> -->
@@ -60,6 +60,7 @@ export default {
   },
   methods:{
     login() {
+      console.log("11");
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return false
         const { data: res } = await this.$axios.post('login', {
