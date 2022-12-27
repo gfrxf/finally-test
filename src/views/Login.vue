@@ -2,7 +2,7 @@
   <div class="login">
     <h3 class="title">联系人在线管理系统</h3>
     <div class="box">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+      <el-form :model="ruleForm" :rules="rules" ref="loginFormRef">
         <el-form-item  prop="account">
           <div class="account">
             <i class="el-icon-user" ></i>
@@ -58,6 +58,25 @@ export default {
      
     };
   },
+  methods:{
+    login() {
+      this.$refs.loginFormRef.validate(async valid => {
+        if (!valid) return false
+        const { data: res } = await this.$axios.post('login', {
+          userId: this.ruleForm.account,
+          userPassword: this.ruleForm.pass
+        })
+        if (res.meta.status !== 200) return this.$message.error('登陆失败')
+        this.$message.success('登录成功')
+        // 1. 将登录成功后的token，保存到客户端sessionStorage中
+        //  1.1 项目中除了登陆之外的其他API接口，必须在登录之后才能访问
+        //  1.2 token 只应在当前网站打开期间生效，所以将 token 保存在sessionStorage中
+        window.sessionStorage.setItem('token', res.data.token)
+        // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
+        this.$router.push('/home')
+      })
+    }
+  }
 };
 </script>
 

@@ -1,8 +1,18 @@
 <template>
   <div class="addNewCt">
-    <div class="topDiv">添加联系人</div> 
+    <div class="topDiv">添加联系人
+      <!-- <img class="back_home" @click="backHome" src="//yun.duiba.com.cn/polaris/close.6096642d7897de46ebdbf325b7285f4eaf15b339.png" alt=""> -->
+    </div> 
     <!-- 头像上传区域 -->
-   
+    <el-upload
+        class="avatar-uploader"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        >
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
     <!-- 表单区域 -->
     <el-form size="small" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="姓名" prop="name">
@@ -62,8 +72,9 @@ export default {
           postalCode:"",
           phoneNumber:"",
           date1: '', // 出生日期
-         
+          imageUrl:"",
         },
+        
         rules: {
           name: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -100,7 +111,7 @@ export default {
   methods: {
       // 表单提交
       async submitForm(formName) {
-        console.log(this.ruleForm)
+        // this.ruleForm = {...this.ruleForm,ctImg:this.tartImg}
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params=this.ruleForm
@@ -123,15 +134,17 @@ export default {
         this.$refs[formName].resetFields();
       },
 
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+        console.log(this.imageUrl)
       },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
+
+      backHome(){
+        console.log(111)
+        this.$router.push('/home')
       },
-     
-    },
+
+ },
   components: {
   
   },
@@ -142,10 +155,37 @@ export default {
 @import url(../App.less);
 .addNewCt{
     width: 500px;
-    height: 700px;
+    height: 720px;
     background-color:@addNewCtBg;
+    margin: auto;
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
     .el-form-item{
       text-align: left !important;
+    }
+    .uploadAvatar{
+      margin-bottom: 15px;
     }
     .topDiv{
       width: 500px;
@@ -154,6 +194,14 @@ export default {
       text-align: center;
       background-color: @addNewCtTop;
       margin-bottom: 20px;
+      position: relative;
+      .back_home{
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      left: 10px;
+      top: 5px;
+  }
     }
     .selectCssBox{
       margin-left: 0;
