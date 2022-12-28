@@ -178,10 +178,10 @@ export default {
     this.contactList()
     console.log("home组件渲染");
   },
- created(){
- let cookie = document.cookie = window.sessionStorage.getItem("Cookie")
-  console.log(cookie);
- }
+//  created(){
+//  let cookie = document.cookie = window.sessionStorage.getItem("Cookie")
+//   console.log(cookie);
+//  }
  
  
 };
