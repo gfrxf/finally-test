@@ -6,11 +6,11 @@
     <!-- 头像上传区域 -->
     <el-upload
         class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://localhost:8080/upload"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         >
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
     <!-- 表单区域 -->
@@ -34,7 +34,7 @@
     <el-input v-model="ruleForm.postalCode" placeholder="邮编"></el-input>
   </el-form-item>
   <el-form-item class="selectCssBox" label="性别" prop="sex">
-    <el-select class="selectCss" v-model="ruleForm.region" placeholder="性别">
+    <el-select class="selectCss" v-model="ruleForm.sex" placeholder="性别">
       <el-option label="男" value="男"></el-option>
       <el-option label="女" value="女"></el-option>
     </el-select>
@@ -65,7 +65,7 @@ export default {
         ruleForm: {
           name: '',
           address:"",
-          region: '',
+          sex: '',
           email:"",
           QQ:"",
           WeiXin:"",
@@ -111,23 +111,24 @@ export default {
   methods: {
       // 表单提交
       async submitForm(formName) {
-        // this.ruleForm = {...this.ruleForm,ctImg:this.tartImg}
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let params=this.ruleForm
-            let url='/addContact'
-            this.$axios.post(url,params).then(res =>{
-              console.log('请求成功')
-              console.log(res)
-            }).catch(error =>{
-              console.log('请求失败')
-              console.log(error )
-            })
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+        try{
+        const { data: res } = await this.$axios.post('/userInfo/addNewCt', {
+          ctName: this.ruleForm.name,
+          ctAd: this.ruleForm.address,
+          ctyb: this.ruleForm.postalCode,
+          ctQq: this.ruleForm.QQ,
+          ctWx: this.ruleForm.WeiXin,
+          ctEm: this.ruleForm.email,
+          ctMf: this.ruleForm.sex,
+          ctBirth: this.ruleForm.date1,
+          ctPhone: this.ruleForm.phoneNumber,
+          ctImg:this.ruleForm.imageUrl
+        })
+        if (res.code !== 200) return this.$message.error('添加失败')
+        this.$message.success('添加成功')
+      }catch(e){
+        console.log(e)
+      } 
       },
       // 表单预校验
       resetForm(formName) {
@@ -135,8 +136,9 @@ export default {
       },
 
       handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-        console.log(this.imageUrl)
+        console.log(res)
+        this.ruleForm.imageUrl = res.data
+        
       },
 
       backHome(){

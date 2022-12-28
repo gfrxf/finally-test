@@ -22,7 +22,7 @@
       </el-form>
 
       <div class="logbtn">
-        <el-button class="lbtn" size="mediun" type="primary" @click="login">登录</el-button>
+        <el-button  @click="login" class="lbtn" size="mediun" type="primary">登录</el-button>
         <!-- <el-button class="lbtn" size="mediun" type="success">登录</el-button> -->
         <!-- <el-button class="lbtn" size="mediun" type="info">登录</el-button> -->
         <!-- <el-button class="lbtn" size="mediun" type="warning">登录</el-button> -->
@@ -60,13 +60,19 @@ export default {
   },
   methods:{
     async login() {
-      console.log(11111)
-        try{
-          const { data: res } = await this.$axios.post('/login/login', {
+      // if(this.ruleForm.account == ""){
+      //   this.$message.error('请输入用户名')
+      //   return
+      // }
+      // if(this.ruleForm.pass == ""){
+      //   this.$message.error('请输入密码')
+      //   return
+      // }
+      try{
+        const { data: res } = await this.$axios.post('/login/login', {
           userId: this.ruleForm.account,
           userPassword: this.ruleForm.pass
         })
-
         if (res.code !== 200) return this.$message.error('登陆失败')
         this.$message.success('登录成功')
         // 1. 将登录成功后的token，保存到客户端sessionStorage中
@@ -75,10 +81,9 @@ export default {
         window.sessionStorage.setItem('token', res.data.token)
         // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
         this.$router.push('/home')
-        }catch(e){
-          console.log(e)
-        }
-       
+      }catch(e){
+        console.log(e)
+      } 
     }
   }
 };

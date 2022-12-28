@@ -1,27 +1,15 @@
 <template>
-  <div class="about">
-    <div class="title">黑名单列表</div>
-    <div class="content">
-      <img class="con-ing" src="../assets/nhlt.jpg" alt="" />
-      <div class="city">
-        <span>{{ city }}</span>
-        <!-- <button class="change-city">[更换城市]</button> -->
-        <el-button class="change-city" size="mediun" type="primary"
-          >[更换城市]</el-button
-        >
-      </div>
-      <div class="weatherbox">
-        <div id="he-plugin-standard"></div>
-      </div>
-    </div>
+  <div class="warn">
+    <div class="title">联系人事项提醒</div>
     <div class="searchcontent">
       <el-input
         v-model="input"
         class="serchinput"
         placeholder="搜索"
       ></el-input>
-      <el-button>搜索</el-button>
-      <el-select v-model="value" class="select" placeholder="全部">
+      <i class="el-icon-search" size="medium"></i>
+      <i class="el-icon-circle-plus-outline"></i>
+      <el-select v-model="value" class="select" placeholder="待完成">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -31,8 +19,8 @@
         </el-option>
       </el-select>
       <!-- <i class="el-icon-circle-plus-outline"></i>
-        <i class="el-icon-remove-outline"></i>
-        <i class="el-icon-setting"></i> -->
+      <i class="el-icon-remove-outline"></i>
+      <i class="el-icon-setting"></i> -->
     </div>
     <div class="tablecontent">
       <i class="el-icon-top"></i>
@@ -41,19 +29,19 @@
         <el-table-column fixed prop="name" label="姓名" width="168">
         </el-table-column>
         <el-table-column prop="sex" label="性别" width="150"> </el-table-column>
-        <el-table-column prop="phone" label="电话" width="180">
+        <el-table-column prop="event" label="事件" width="180">
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small"
-              >详情</el-button
+              >取消</el-button
             >
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small"
-              >还原</el-button
+              >屏蔽</el-button
             >
           </template>
         </el-table-column>
@@ -68,8 +56,6 @@
 
 <script>
 export default {
-  name: "HomeView",
-  components: {},
   data() {
     return {
       city: "北京",
@@ -93,60 +79,36 @@ export default {
         {
           name: "王小虎",
           sex: "男",
-          phone: "17754545",
+          event: "做综合作业",
         },
         {
           name: "王小虎",
           sex: "男",
-          phone: "17754545",
+          event: "做综合作业",
         },
         {
           name: "王小虎",
           sex: "男",
-          phone: "17754545",
+          event: "做综合作业",
         },
       ],
+      pageNum:0,
+      pageSize:10,
+      words:''
     };
   },
-  created() {
-    // console.log(this.$route.params.ctid, "ctid");
-    //和风天气插件调用
-    window.WIDGET = {
-      CONFIG: {
-        layout: "1",
-        width: 570,
-        height: 150,
-        background: "1",
-        dataColor: "FFFFFF",
-        borderRadius: "5",
-        key: "bb8b0567ae4b467d864e0aa4a4cfbd9c",
-      },
-    };
-    (function (d) {
-      var c = d.createElement("link");
-      c.rel = "stylesheet";
-      c.href =
-        "https://widget.heweather.net/simple/static/css/he-simple.css?v=1.4.0";
-      var s = d.createElement("script");
-      s.src =
-        "https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0";
-      var sn = d.getElementsByTagName("script")[0];
-      sn.parentNode.insertBefore(c, sn);
-      sn.parentNode.insertBefore(s, sn);
-    })(document);
-  },
-  mounted(){
-    console.log(this.$route.query.ctid, "ctid");
-  }
-  //   mounted:{
+  methods:{
 
-  //   }
+  },
+  created(){
+  
+  }
 };
 </script>
 
 <style lang="less" scoped>
 @import url(../App.less);
-.about {
+.warn {
   width: 800px;
   margin: 0 auto;
   // text-align: center;
@@ -164,49 +126,22 @@ export default {
     line-height: 50px;
     color: #fff;
   }
-  .content {
-    margin-top: 50px;
-    display: flex;
-    align-items: center;
-    .con-ing {
-      // width: 10px;
-      // height: 10px;
-      width: 80px;
-      height: 80px;
-
-      border-radius: 50%;
-      margin: 10px;
-    }
-    .city {
-      display: flex;
-      flex-direction: column;
-
-      .change-city {
-        font-size: 12px;
-        margin-top: 10px;
-        margin-left: 10px;
-      }
-    }
-    .weatherbox {
-      margin-left: 25px;
-    }
-  }
   .searchcontent {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin-top: 20px;
+    margin-top: 60px;
 
     .serchinput {
-      width: 150px;
-      margin-right: -40px;
+      width: 250px;
+      margin-right: -10px;
     }
     .el-icon-search {
       // width: 30px;
       // height: 30px;
     }
     .select {
-      width: 150px;
+      width: 100px;
     }
   }
   .tablecontent {
