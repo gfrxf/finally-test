@@ -6,9 +6,10 @@
       <!-- 头像展示区域 -->
       <el-upload
         class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://localhost:8080/upload"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
+        name="image"
         >
         <img v-if="ruleForm.picName" :src="ruleForm.picName" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -114,31 +115,33 @@
     methods: {
         // 表单提交
         async submitForm(formName) {
-          // await this.submitDialogData()
-          console.log(this.tartImg)
-          // this.ruleForm = {...this.ruleForm,ctImg:this.tartImg}
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              let params=this.ruleForm
-              let url='/addContact'
-              this.$axios.post(url,params).then(res =>{
-                console.log('请求成功')
-                console.log(res)
-              }).catch(error =>{
-                console.log('请求失败')
-                console.log(error )
-              })
-            } else {
-              console.log('error submit!!');
-              return false;
-            }
-          });
+          const { data: res } = await this.$axios.post('/userInfo/updateCt', {
+              ctId:this.$route.query?.ctId,
+              ctName:this.ruleForm.name,
+              ctAd:this.ruleForm.address,
+              ctyb:this.ruleForm.postalCode,
+              ctQq:this.ruleForm.QQ,
+              ctWx:this.ruleForm.WeiXin,
+              ctEm:this.ruleForm.email,
+              ctMf:this.ruleForm.sex,
+              ctBirth:this.ruleForm.date1,
+              ctPhone:this.ruleForm.phoneNumber,
+              picName:this.ruleForm.picName,
+          })
+          if(res.code == 200){
+            this.$message.success("更新成功")
+          }else{
+            this.$message.error("更新失败")
+          }
+         
         },
         // 请求数据
         async getUserInfo(){
           console.log(this.$route.query?.ctId)
           const { data: res } = await this.$axios.get('/userInfo/detailCt', {
-            ctId:this.$route.query?.ctId
+            params:{
+              ctId:this.$route.query?.ctId
+            }    
           })
           this.ruleForm.name = res.data.ctName
           this.ruleForm.address = res.data.ctAd 
@@ -155,11 +158,11 @@
         resetForm(formName) {
           this.$refs[formName].resetFields();
         },
-  
         handleAvatarSuccess(res, file) {
-          this.picName = URL.createObjectURL(file.raw);
-          console.log(this.picName)
-        },
+        console.log(res)
+        this.ruleForm.picName = res.data
+        
+      },
   
         backHome(){
           console.log(111)
