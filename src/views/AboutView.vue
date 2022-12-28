@@ -136,6 +136,7 @@ export default {
           params: {
             pageNum: this.pageNum,
             pageSize: this.pageSize,
+            words: this.words,
           },
         });
         if (res.code != 200) return this.$message.error("请求失败");
@@ -155,14 +156,14 @@ export default {
           params: {
             type: type,
             ctId: id,
-            words: this.words,
+           
           },
         });
         if (res.code != 200) return this.$message.error("请求失败");
         this.$message.success("请求成功");
         console.log(res.data);
         // this.tableData = res.data.records;
-        this.totalCount = res.data.total
+        this.totalCount = res.data.total;
         // console.log(this.tableData,'table');
       } catch (e) {
         console.log(e);
@@ -181,7 +182,7 @@ export default {
       });
     },
     handleClick2(e) {
-      // console.log(e);
+      console.log(e,'e');
       let type = 1; // 0代表屏蔽，1代表还原  ctid用户id
       this.pingbi(type, e.ctId);
       this.contactList();
