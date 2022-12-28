@@ -22,7 +22,7 @@
       </el-form>
 
       <div class="logbtn">
-        <el-button class="lbtn" size="mediun" type="primary">登录</el-button>
+        <el-button class="lbtn" size="mediun" type="primary" @click="login">登录</el-button>
         <!-- <el-button class="lbtn" size="mediun" type="success">登录</el-button> -->
         <!-- <el-button class="lbtn" size="mediun" type="info">登录</el-button> -->
         <!-- <el-button class="lbtn" size="mediun" type="warning">登录</el-button> -->
@@ -59,14 +59,15 @@ export default {
     };
   },
   methods:{
-    login() {
-      this.$refs.loginFormRef.validate(async valid => {
-        if (!valid) return false
-        const { data: res } = await this.$axios.post('login', {
+    async login() {
+      console.log(11111)
+        try{
+          const { data: res } = await this.$axios.post('/login/login', {
           userId: this.ruleForm.account,
           userPassword: this.ruleForm.pass
         })
-        if (res.meta.status !== 200) return this.$message.error('登陆失败')
+
+        if (res.code !== 200) return this.$message.error('登陆失败')
         this.$message.success('登录成功')
         // 1. 将登录成功后的token，保存到客户端sessionStorage中
         //  1.1 项目中除了登陆之外的其他API接口，必须在登录之后才能访问
@@ -74,7 +75,10 @@ export default {
         window.sessionStorage.setItem('token', res.data.token)
         // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
         this.$router.push('/home')
-      })
+        }catch(e){
+          console.log(e)
+        }
+       
     }
   }
 };

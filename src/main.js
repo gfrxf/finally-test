@@ -8,7 +8,7 @@ import axios from 'axios';
 Vue.prototype.$axios = axios 
 import 'element-ui/lib/theme-chalk/index.css';
 //根路径配置
-axios.defaults.baseURL = ""
+axios.defaults.baseURL = "http://localhost:8080/"
 axios.interceptors.request.use(config => {
   config.headers.Authorization = window.sessionStorage.getItem("token")
   return config
