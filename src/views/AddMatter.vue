@@ -63,7 +63,7 @@
             const { data: res } = await this.$axios.post('/userInfo/listContracts', {
               matterTime: this.ruleForm.date1,
               matter: this.ruleForm.phoneNumber,
-              ctId:this.$route.params?.ctId
+              ctId:this.$route.query?.ctId
             })
             if (res.code !== 200) return this.$message.error('添加失败')
             this.$message.success('添加成功')
