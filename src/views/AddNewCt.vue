@@ -116,17 +116,18 @@ export default {
         const { data: res } = await this.$axios.post('/userInfo/addNewCt', {
           ctName: this.ruleForm.name,
           ctAd: this.ruleForm.address,
-          ctyb: this.ruleForm.postalCode,
+          ctYb: this.ruleForm.postalCode,
           ctQq: this.ruleForm.QQ,
           ctWx: this.ruleForm.WeiXin,
           ctEm: this.ruleForm.email,
-          ctMf: this.ruleForm.sex,
+          ctMf: `${this.ruleForm.sex == "男" ? 0 : 1}`,
           ctBirth: this.ruleForm.date1,
           ctPhone: this.ruleForm.phoneNumber,
           picName:this.ruleForm.picName
         })
         if (res.code !== 200) return this.$message.error('添加失败')
         this.$message.success('添加成功')
+        this.$router.push('/home')
       }catch(e){
         console.log(e)
       } 

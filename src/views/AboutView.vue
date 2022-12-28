@@ -181,11 +181,11 @@ export default {
         },
       });
     },
-    handleClick2(e) {
+    async handleClick2(e) {
       console.log(e,'e');
       let type = 1; // 0代表屏蔽，1代表还原  ctid用户id
-      this.pingbi(type, e.ctId);
-      this.contactList();
+      await this.pingbi(type, e.ctId);
+      await this.contactList();
     },
   },
   created() {

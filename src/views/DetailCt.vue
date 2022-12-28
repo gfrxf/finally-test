@@ -119,17 +119,18 @@
               ctId:this.$route.query?.ctId,
               ctName:this.ruleForm.name,
               ctAd:this.ruleForm.address,
-              ctyb:this.ruleForm.postalCode,
+              ctYb:this.ruleForm.postalCode,
               ctQq:this.ruleForm.QQ,
               ctWx:this.ruleForm.WeiXin,
               ctEm:this.ruleForm.email,
-              ctMf:this.ruleForm.sex,
+              ctMf:`${this.ruleForm.region == "男" ? 0 : 1}`,
               ctBirth:this.ruleForm.date1,
               ctPhone:this.ruleForm.phoneNumber,
               picName:this.ruleForm.picName,
           })
           if(res.code == 200){
             this.$message.success("更新成功")
+            this.$router.push('/home')
           }else{
             this.$message.error("更新失败")
           }
@@ -145,11 +146,11 @@
           })
           this.ruleForm.name = res.data.ctName
           this.ruleForm.address = res.data.ctAd 
-          this.ruleForm.postalCode = res.data.ctyb
+          this.ruleForm.postalCode = res.data.ctYb
           this.ruleForm.QQ = res.data.ctQq
           this.ruleForm.WeiXin = res.data.ctWx
           this.ruleForm.email = res.data.ctEm
-          this.ruleForm.sex = res.data.ctMf
+          this.ruleForm.region = `${res.data.ctMf == 0 ? "男" : "女"}`
           this.ruleForm.date1 = res.data.ctBirth
           this.ruleForm.phoneNumber = res.data.ctPhone
           this.ruleForm.picName = res.data.picName
@@ -169,7 +170,7 @@
           this.$router.push('/home')
         },
         goToEvent(){
-          this.$router.push({path:'/warn',query:{ctId:this.$route.query?.ctId}})
+          this.$router.push({path:'/warn',query:{ctId:this.$route.query?.ctId,picName:this.ruleForm.picName}})
         }
   
    },

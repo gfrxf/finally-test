@@ -33,7 +33,7 @@
           ruleForm: {
             phoneNumber:"",
             date1: '', // 出生日期
-            imageUrl:"https://yun.duiba.com.cn/polaris/lQLPJyF0jznlPWzMyMzIsFHp1wjauc7pA6YD8T9ASQA_200_200.png_720x720g.2bf6c336cad1e016669b358ce5d2f3320324b198.jpg",
+            imageUrl:this.$route.query?.picName,
           },
           
           rules: {
@@ -60,13 +60,14 @@
           }
            */
           try{
-            const { data: res } = await this.$axios.post('/userInfo/listContracts', {
+            const { data: res } = await this.$axios.post('/matter/addMatter', {
               matterTime: this.ruleForm.date1,
               matter: this.ruleForm.phoneNumber,
               ctId:this.$route.query?.ctId
             })
             if (res.code !== 200) return this.$message.error('添加失败')
             this.$message.success('添加成功')
+            this.$router.push('/warn')
           }catch(e){
             console.log(e)
           } 

@@ -22,7 +22,7 @@
 
       ></el-input>
       <i class="el-icon-search" @click="searchHandle" size="medium"></i>
-      <el-select v-model="value" class="select" placeholder="全部">
+      <el-select v-model="value" class="select" placeholder="全部" @change="sexClick">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -39,15 +39,15 @@
       <i class="el-icon-setting" @click="toPageWarn"></i>
     </div>
     <div class="tablecontent">
-      <i class="el-icon-top"></i>
-      <i class="el-icon-bottom"></i>
+      <i class="el-icon-top" @click="sortTop"></i>
+      <i class="el-icon-bottom" @click="sortBottom"></i>
 
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column fixed prop="ctName" label="姓名" width="168">
         </el-table-column>
         <el-table-column prop="ctMf" align="center" label="性别" width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.ctMf == "1" ? "男" : "女" }}</span>
+            <span>{{ scope.row.ctMf == "0" ? "男" : "女" }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="ctPhone" label="电话" width="180">
@@ -85,15 +85,15 @@ export default {
       input: "",
       options: [
         {
-          value: "选项1",
+          value: "",
           label: "全部",
         },
         {
-          value: "选项2",
+          value: "0",
           label: "男",
         },
         {
-          value: "选项3",
+          value: "1",
           label: "女",
         },
       ],
@@ -113,6 +113,20 @@ export default {
     };
   },
   methods: {
+    sortTop(){
+      this.tableData = this.compare(this.tableData,"ctName")
+      console.log(this.tableData)
+    },
+    sortBottom(){
+      this.tableData = this.compare(this.tableData,"ctName").reverse()
+    },
+    compare(arr,key){
+      return arr.sort(function(a,b){
+        let value1 = (a[key].substr(0,1)).charCodeAt()
+        let value2 = (b[key].substr(0,1)).charCodeAt()
+        return value1 - value2
+      })
+    },
     toPageAddMatter() {
       // console.log(this.ctid);
       this.$router.push({
@@ -123,19 +137,19 @@ export default {
       });
     },
     toPageWarn() {
-      this.$router.push({ path: "/warn", query: { ctId: this.ctId } });
+      this.$router.push({ path: "/warn"});
     },
     // 分页切换
-    handleCurrentChange(val){
+    async handleCurrentChange(val){
       // console.log(val);
       this.pageNum = val
-      this.contactList()
+      await this.contactList()
     },
     // 搜索
-    searchHandle(){
+    async searchHandle(){
       console.log(this.input,'input');
       this.words = this.input
-      this.contactList()
+      await this.contactList()
     },
     // 联系人列表接口
     async contactList() {
@@ -147,6 +161,7 @@ export default {
             pageNum: this.pageNum,
             pageSize: this.pageSize,
             words: this.words,
+            sex:this.value
           },
         });
         if (res.code != 200) return this.$message.error("请求失败");
@@ -179,6 +194,11 @@ export default {
         console.log(e);
       }
     },
+    // 男女筛选
+    async sexClick(){
+      await this.contactList()
+    },
+
     // 详情按钮
     handleClick1(e) {
       // console.log(e.ctId, "e");
@@ -190,11 +210,11 @@ export default {
         },
       });
     },
-    handleClick2(e) {
+    async handleClick2(e) {
       // console.log(e);
       let type = 0 // 0代表屏蔽，ctid用户id
-      this.pingbi(type, e.ctId)
-      this.contactList()
+      await this.pingbi(type, e.ctId)
+      await this.contactList()
     },
   },
   created() {
