@@ -10,9 +10,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 import { Message } from 'element-ui';
 //根路径配置
 axios.defaults.baseURL = "http://localhost:8080"
+// axios.defaults.withCredentials = true
 axios.interceptors.request.use(config => {
   const token =window.sessionStorage.getItem("token")
   config.headers.Authorization = `Bearer ${token}`
+  
   // console.log(window.sessionStorage.getItem("token"));
   return config
 })
