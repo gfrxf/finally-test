@@ -10,7 +10,7 @@
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         >
-        <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
+        <img v-if="ruleForm.picName" :src="ruleForm.picName" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
       <!-- 表单区域 -->
@@ -63,16 +63,16 @@
     data() {
         return {
           ruleForm: {
-            name: '赵六',
-            address:"湖南省长沙市",
-            region: '1886726389',
-            email:"1212332",
-            QQ:"32242",
-            WeiXin:"3424",
-            postalCode:"34324234",
-            phoneNumber:"344343434",
-            date1: '2022-03-04', // 出生日期
-            imageUrl:"https://yun.duiba.com.cn/polaris/close.6096642d7897de46ebdbf325b7285f4eaf15b339.png",
+            name: '',
+            address:"",
+            region: '',
+            email:"",
+            QQ:"",
+            WeiXin:"",
+            postalCode:"",
+            phoneNumber:"",
+            date1: '', // 出生日期
+            picName:"",
           },
           
           rules: {
@@ -149,7 +149,7 @@
           this.ruleForm.sex = res.data.ctMf
           this.ruleForm.date1 = res.data.ctBirth
           this.ruleForm.phoneNumber = res.data.ctPhone
-          this.ruleForm.imageUrl = res.data.ctImg
+          this.ruleForm.picName = res.data.picName
         },
         // 表单预校验
         resetForm(formName) {
@@ -157,8 +157,8 @@
         },
   
         handleAvatarSuccess(res, file) {
-          this.imageUrl = URL.createObjectURL(file.raw);
-          console.log(this.imageUrl)
+          this.picName = URL.createObjectURL(file.raw);
+          console.log(this.picName)
         },
   
         backHome(){
