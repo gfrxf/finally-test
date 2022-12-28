@@ -20,7 +20,7 @@
         class="serchinput"
         placeholder="搜索"
       ></el-input>
-      <el-button>搜索</el-button>
+      <el-button @click="searchHandle">搜索</el-button>
       <el-select v-model="value" class="select" placeholder="全部">
         <el-option
           v-for="item in options"
@@ -38,21 +38,25 @@
       <i class="el-icon-top"></i>
       <i class="el-icon-bottom"></i>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column fixed prop="name" label="姓名" width="168">
+        <el-table-column fixed prop="ctName" label="姓名" width="168">
         </el-table-column>
-        <el-table-column prop="sex" label="性别" width="150"> </el-table-column>
-        <el-table-column prop="phone" label="电话" width="180">
+        <el-table-column prop="ctMf" label="性别" width="150">
+          <template slot-scope="scope">
+            <span>{{ scope.row.ctMf == "1" ? "男" : "女" }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ctPhone" label="电话" width="180">
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button @click="handleClick1(scope.row)" type="text" size="small"
               >详情</el-button
             >
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button @click="handleClick2(scope.row)" type="text" size="small"
               >还原</el-button
             >
           </template>
@@ -60,7 +64,15 @@
       </el-table>
     </div>
     <div class="pagination">
-      <el-pagination small layout="prev, pager, next" :total="50">
+      <el-pagination
+        small
+        layout="prev, pager, next"
+        :total="totalCount"
+        background=""
+        @current-change="handleCurrentChange"
+        :current-page="pageNum"
+        :page-size="pageSize"
+      >
       </el-pagination>
     </div>
   </div>
@@ -89,24 +101,92 @@ export default {
         },
       ],
       value: "",
-      tableData: [
-        {
-          name: "王小虎",
-          sex: "男",
-          phone: "17754545",
-        },
-        {
-          name: "王小虎",
-          sex: "男",
-          phone: "17754545",
-        },
-        {
-          name: "王小虎",
-          sex: "男",
-          phone: "17754545",
-        },
-      ],
+      tableData: [],
+      pageNum: 1,
+      pageSize: 2,
+      words: "",
+      result: {},
+      // 默认显示第几页
+      // currentPage:1,
+      // 总条数，根据接口获取数据长度(注意：这里不能为空)
+      totalCount: 1,
+      type: 0,
+      ctid: "",
     };
+  },
+  methods: {
+    // 分页切换
+    handleCurrentChange(val) {
+      // console.log(val);
+      this.pageNum = val;
+      this.contactList();
+    },
+    // 搜索
+    searchHandle() {
+      console.log(this.input, "input");
+      this.words = this.input;
+      this.contactList();
+    },
+    // 黑名单列表接口
+    async contactList() {
+      // console.log("concat");
+      console.log(this.pageNum, this.pageSize, "concat");
+      try {
+        const { data: res } = await this.$axios.get("/userInfo/blackCtList", {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize,
+            words: this.words,
+          },
+        });
+        if (res.code != 200) return this.$message.error("请求失败");
+        this.$message.success("请求成功");
+        console.log(res.data);
+        this.tableData = res.data.records;
+        this.totalCount = res.data.total;
+        // console.log(this.tableData,'table');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    // 屏蔽还原接口
+    async pingbi(type, id) {
+      try {
+        const { data: res } = await this.$axios.get("/userInfo/operation", {
+          params: {
+            type: type,
+            ctId: id,
+           
+          },
+        });
+        if (res.code != 200) return this.$message.error("请求失败");
+        this.$message.success("请求成功");
+        console.log(res.data);
+        // this.tableData = res.data.records;
+        this.totalCount = res.data.total;
+        // console.log(this.tableData,'table');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    // 详情按钮
+    handleClick1(e) {
+      // console.log(e.ctId, "e");
+      console.log(e, "e");
+      this.$router.push({
+        path: "/detailct",
+        query: {
+          ctId: e.ctId,
+        },
+      });
+    },
+    handleClick2(e) {
+      console.log(e,'e');
+      let type = 1; // 0代表屏蔽，1代表还原  ctid用户id
+      this.pingbi(type, e.ctId);
+      this.contactList();
+    },
   },
   created() {
     // console.log(this.$route.params.ctid, "ctid");
@@ -135,9 +215,10 @@ export default {
       sn.parentNode.insertBefore(s, sn);
     })(document);
   },
-  mounted(){
-    console.log(this.$route.query.ctid, "ctid");
-  }
+  mounted() {
+    // console.log(this.$route.query.ctid, "ctid");
+    this.contactList();
+  },
   //   mounted:{
 
   //   }

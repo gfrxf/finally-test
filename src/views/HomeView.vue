@@ -159,7 +159,7 @@ export default {
         console.log(e);
       }
     },
-    // 屏蔽接口
+    // 屏蔽还原接口
     async pingbi(type,id){
       try {
         const { data: res } = await this.$axios.get("/userInfo/operation", {
@@ -172,7 +172,7 @@ export default {
         if (res.code != 200) return this.$message.error("请求失败");
         this.$message.success("请求成功");
         console.log(res.data);
-        this.tableData = res.data.records;
+        // this.tableData = res.data.records;
         this.totalCount = res.data.total
         // console.log(this.tableData,'table');
       } catch (e) {
