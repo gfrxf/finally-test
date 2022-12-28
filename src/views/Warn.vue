@@ -26,7 +26,7 @@
       <i class="el-icon-top"></i>
       <i class="el-icon-bottom"></i>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column fixed prop="name" label="姓名" width="168">
+        <el-table-column fixed prop="ctName" label="姓名" width="168">
         </el-table-column>
         <el-table-column prop="sex" label="性别" width="150"> </el-table-column>
         <el-table-column prop="event" label="事件" width="180">
