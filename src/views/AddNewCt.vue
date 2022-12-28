@@ -9,8 +9,9 @@
         action="http://localhost:8080/upload"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
+        name="image"
         >
-        <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
+        <img v-if="ruleForm.picName" :src="ruleForm.picName" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
     <!-- 表单区域 -->
@@ -72,7 +73,7 @@ export default {
           postalCode:"",
           phoneNumber:"",
           date1: '', // 出生日期
-          imageUrl:"",
+          picName:"",
         },
         
         rules: {
@@ -122,7 +123,7 @@ export default {
           ctMf: this.ruleForm.sex,
           ctBirth: this.ruleForm.date1,
           ctPhone: this.ruleForm.phoneNumber,
-          ctImg:this.ruleForm.imageUrl
+          ctImg:this.ruleForm.picName
         })
         if (res.code !== 200) return this.$message.error('添加失败')
         this.$message.success('添加成功')
@@ -137,7 +138,7 @@ export default {
 
       handleAvatarSuccess(res, file) {
         console.log(res)
-        this.ruleForm.imageUrl = res.data
+        this.ruleForm.picName = res.data
         
       },
 
