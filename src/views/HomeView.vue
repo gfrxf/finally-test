@@ -32,13 +32,13 @@
       </el-select>
       <i
         class="el-icon-circle-plus-outline"
-        @click="$router.push({ path: '/addmatter' })"
+        @click="$router.push({ path: '/addnewct' })"
       ></i>
       <i
         class="el-icon-remove-outline"
         @click="toPageAddMatter"
       ></i>
-      <i class="el-icon-setting" @click="this.$router.push({ path: '/warn',query:{ctid} })"></i>
+      <i class="el-icon-setting" @click="toPageWarn"></i>
     </div>
     <div class="tablecontent">
       <i class="el-icon-top"></i>
@@ -54,14 +54,14 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button @click="handleClick1(scope.row)" type="text" size="small"
               >详情</el-button
             >
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button @click="handleClick2(scope.row)" type="text" size="small"
               >屏蔽</el-button
             >
           </template>
@@ -103,19 +103,22 @@ export default {
           name: "王小虎",
           sex: "男",
           phone: "17754545",
+          ctId:12345
         },
         {
           name: "王小虎",
           sex: "男",
           phone: "17754545",
+          ctId:1234
         },
         {
           name: "王小虎",
           sex: "男",
           phone: "17754545",
-        },
+          ctId:123
+        }
       ],
-      ctid:1524
+      ctId:1524
     };
   },
   methods: {
@@ -123,11 +126,15 @@ export default {
       // console.log(this.ctid);
      this.$router.push({
       path:'about',
-      query:{
-        ctid:this.ctid
-      }
+      // query:{
+      //   ctId:this.ctId
+      // }
      })
     },
+    toPageWarn(){
+      this.$router.push({ path: '/warn',query:{ctId:this.ctId} })
+    }
+    ,
     async contactList(){
       console.log("concat");
       try {
@@ -144,6 +151,15 @@ export default {
         console.log(e);
       }
     },
+    handleClick1(e){
+      console.log(e.ctId,'e');
+     this.$router.push({path:'/addnewct',query:{
+      ctId:e.ctId
+     }})
+    },
+    handleClick2(e){
+      console.log(e);
+    }
 
   },
   created() {
@@ -176,7 +192,7 @@ export default {
   },
   mounted(){
     this.contactList()
-    console.log("home组件渲染");
+    // console.log("home组件渲染");
   },
 //  created(){
 //  let cookie = document.cookie = window.sessionStorage.getItem("Cookie")
