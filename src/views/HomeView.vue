@@ -34,23 +34,22 @@
         class="el-icon-circle-plus-outline"
         @click="$router.push({ path: '/addnewct' })"
       ></i>
-      <i
-        class="el-icon-remove-outline"
-        @click="toPageAddMatter"
-      ></i>
+      <i class="el-icon-remove-outline" @click="toPageAddMatter"></i>
       <i class="el-icon-setting" @click="toPageWarn"></i>
     </div>
     <div class="tablecontent">
       <i class="el-icon-top"></i>
       <i class="el-icon-bottom"></i>
-      
+
       <el-table :data="tableData" border style="width: 100%">
-       
-        <el-table-column fixed prop="name"  label="姓名" width="168">
-        
+        <el-table-column fixed prop="ctName" label="姓名" width="168">
         </el-table-column>
-        <el-table-column prop="sex" label="性别" width="150"> </el-table-column>
-        <el-table-column prop="phone" label="电话" width="180">
+        <el-table-column prop="ctMf" align="center" label="性别" width="150">
+          <template slot-scope="scope">
+            <span>{{ scope.row.ctMf == "1" ? "男" : "女" }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="ctPhone" label="电话" width="180">
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
@@ -98,72 +97,62 @@ export default {
         },
       ],
       value: "",
-      tableData: [
-        {
-          name: "王小虎",
-          sex: "男",
-          phone: "17754545",
-          ctId:12345
-        },
-        {
-          name: "王小虎",
-          sex: "男",
-          phone: "17754545",
-          ctId:1234
-        },
-        {
-          name: "王小虎",
-          sex: "男",
-          phone: "17754545",
-          ctId:123
-        }
-      ],
-      ctId:1524
+      tableData: [],
+      ctId: 1524,
+      pageNum: 1,
+      pageSize: 10,
+      words: "",
+      result: {},
     };
   },
   methods: {
     toPageAddMatter() {
       // console.log(this.ctid);
-     this.$router.push({
-      path:'about',
-      // query:{
-      //   ctId:this.ctId
-      // }
-     })
+      this.$router.push({
+        path: "about",
+        // query:{
+        //   ctId:this.ctId
+        // }
+      });
     },
-    toPageWarn(){
-      this.$router.push({ path: '/warn',query:{ctId:this.ctId} })
-    }
-    ,
-    async contactList(){
-      console.log("concat");
-      try {
-        const {data:res} = await this.$axios.get('/userInfo/listContracts',{
-          pageNum:this.pageNum,
-          pageSize:this.pageSize,
-          words:this.words
-        })
-        if(res.code != 200) return this.$message.error('请求失败')
-        this.$message.success("请求成功")
-        console.log(res);
+    toPageWarn() {
+      this.$router.push({ path: "/warn", query: { ctId: this.ctId } });
+    },
 
-      }catch(e){
+    async contactList() {
+      // console.log("concat");
+      console.log(this.pageNum, this.pageSize, "concat");
+      try {
+        const { data: res } = await this.$axios.get("/userInfo/listContracts", {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize,
+            words: this.words,
+          },
+        });
+        if (res.code != 200) return this.$message.error("请求失败");
+        this.$message.success("请求成功");
+        console.log(res.data);
+        this.tableData = res.data.records;
+        // console.log(this.tableData,'table');
+      } catch (e) {
         console.log(e);
       }
     },
-    handleClick1(e){
-      console.log(e.ctId,'e');
-     this.$router.push({path:'/addnewct',query:{
-      ctId:e.ctId
-     }})
+    handleClick1(e) {
+      console.log(e.ctId, "e");
+      this.$router.push({
+        path: "/detailct",
+        query: {
+          ctId: e.ctId,
+        },
+      });
     },
-    handleClick2(e){
+    handleClick2(e) {
       console.log(e);
-    }
-
+    },
   },
   created() {
-
     //和风天气插件调用
     window.WIDGET = {
       CONFIG: {
@@ -188,18 +177,15 @@ export default {
       sn.parentNode.insertBefore(c, sn);
       sn.parentNode.insertBefore(s, sn);
     })(document);
-   
   },
-  mounted(){
-    this.contactList()
+  mounted() {
+    this.contactList();
     // console.log("home组件渲染");
   },
-//  created(){
-//  let cookie = document.cookie = window.sessionStorage.getItem("Cookie")
-//   console.log(cookie);
-//  }
- 
- 
+  //  created(){
+  //  let cookie = document.cookie = window.sessionStorage.getItem("Cookie")
+  //   console.log(cookie);
+  //  }
 };
 </script>
 
@@ -275,24 +261,24 @@ export default {
     //   position: relative;
 
     // }
-    .el-icon-top{
+    .el-icon-top {
       width: 15px;
       height: 15px;
       position: absolute;
       z-index: 99;
       left: 10%;
-      top: 2%;
+      top: 1%;
     }
-    .el-icon-bottom{
+    .el-icon-bottom {
       width: 15px;
       height: 15px;
       position: absolute;
       z-index: 99;
       left: 10%;
-      top: 13%;
+      top: 8%;
     }
   }
-  .pagination{
+  .pagination {
     margin-top: 40px;
   }
 }
