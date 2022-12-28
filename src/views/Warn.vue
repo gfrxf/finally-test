@@ -8,7 +8,7 @@
         placeholder="搜索"
       ></el-input>
       <i class="el-icon-search" size="medium"></i>
-      <i class="el-icon-circle-plus-outline"></i>
+      <i class="el-icon-circle-plus-outline" @click="handleClick"></i>
       <el-select v-model="value" class="select" placeholder="待完成">
         <el-option
           v-for="item in options"
@@ -33,14 +33,14 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button @click="handleClick1(scope.row)" type="text" size="small"
               >取消</el-button
             >
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button @click="handleClick2(scope.row)" type="text" size="small"
               >屏蔽</el-button
             >
           </template>
@@ -94,14 +94,19 @@ export default {
       ],
       pageNum:0,
       pageSize:10,
-      words:''
+      words:'',
+      ctId:0
     };
   },
   methods:{
-
+    handleClick(e){
+     this.$router.push({path:'/detailct',query:{
+      ctId:this.ctId
+     }})
+    },
   },
   created(){
-  
+ this.ctId = this.$route.query.ctId
   }
 };
 </script>

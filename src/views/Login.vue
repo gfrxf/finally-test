@@ -78,8 +78,8 @@ export default {
         // 1. 将登录成功后的token，保存到客户端sessionStorage中
         //  1.1 项目中除了登陆之外的其他API接口，必须在登录之后才能访问
         //  1.2 token 只应在当前网站打开期间生效，所以将 token 保存在sessionStorage中
-        window.sessionStorage.setItem('token', res.data.token || '123456')
-        window.sessionStorage.setItem("Cookie",res.data.JSESSIONID || '')
+        window.sessionStorage.setItem('token', res.data.token )
+        // window.sessionStorage.setItem("Cookie",res.data.JSESSIONID || '')
         // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
         this.$router.push('/home')
       }catch(e){
