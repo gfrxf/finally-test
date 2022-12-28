@@ -129,7 +129,7 @@
               picName:this.ruleForm.picName,
           })
           if(res.code == 200){
-            this.$message.success("更新成功")
+            // this.$message.success("更新成功")
             this.$router.push('/home')
           }else{
             this.$message.error("更新失败")

@@ -140,7 +140,7 @@ export default {
           },
         });
         if (res.code != 200) return this.$message.error("请求失败");
-        this.$message.success("请求成功");
+        // this.$message.success("请求成功");
         console.log(res.data);
         this.tableData = res.data.records;
         this.totalCount = res.data.total;
@@ -160,7 +160,7 @@ export default {
           },
         });
         if (res.code != 200) return this.$message.error("请求失败");
-        this.$message.success("请求成功");
+        // this.$message.success("请求成功");
         console.log(res.data);
         // this.tableData = res.data.records;
         this.totalCount = res.data.total;

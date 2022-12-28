@@ -126,7 +126,7 @@ export default {
           picName:this.ruleForm.picName
         })
         if (res.code !== 200) return this.$message.error('添加失败')
-        this.$message.success('添加成功')
+        // this.$message.success('添加成功')
         this.$router.push('/home')
       }catch(e){
         console.log(e)

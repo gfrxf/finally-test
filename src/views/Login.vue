@@ -74,7 +74,7 @@ export default {
           userPassword: this.ruleForm.pass
         })
         if (res.code !== 200) return this.$message.error('登陆失败')
-        this.$message.success('登录成功')
+        // this.$message.success('登录成功')
         // 1. 将登录成功后的token，保存到客户端sessionStorage中
         //  1.1 项目中除了登陆之外的其他API接口，必须在登录之后才能访问
         //  1.2 token 只应在当前网站打开期间生效，所以将 token 保存在sessionStorage中
