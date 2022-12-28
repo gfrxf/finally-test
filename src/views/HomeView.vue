@@ -176,8 +176,12 @@ export default {
   },
   mounted(){
     this.contactList()
-    console.log(document.cookie,'cookie');
-  }
+    console.log("home组件渲染");
+  },
+ created(){
+ let cookie = document.cookie = window.sessionStorage.getItem("Cookie")
+  console.log(cookie);
+ }
  
  
 };
