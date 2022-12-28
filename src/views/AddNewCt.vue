@@ -123,7 +123,7 @@ export default {
           ctMf: this.ruleForm.sex,
           ctBirth: this.ruleForm.date1,
           ctPhone: this.ruleForm.phoneNumber,
-          ctImg:this.ruleForm.picName
+          picName:this.ruleForm.picName
         })
         if (res.code !== 200) return this.$message.error('添加失败')
         this.$message.success('添加成功')
