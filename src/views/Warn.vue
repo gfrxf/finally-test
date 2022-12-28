@@ -92,8 +92,17 @@ export default {
           event: "做综合作业",
         },
       ],
+      pageNum:0,
+      pageSize:10,
+      words:''
     };
   },
+  methods:{
+
+  },
+  created(){
+  
+  }
 };
 </script>
 

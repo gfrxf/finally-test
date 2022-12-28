@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     toPageAddMatter() {
-      console.log(this.ctid);
+      // console.log(this.ctid);
      this.$router.push({
       path:'about',
       query:{
@@ -128,8 +128,26 @@ export default {
       }
      })
     },
+    async contactList(){
+      console.log("concat");
+      try {
+        const {data:res} = await this.$axios.get('/userInfo/listContracts',{
+          pageNum:this.pageNum,
+          pageSize:this.pageSize,
+          words:this.words
+        })
+        if(res.code != 200) return this.$message.error('请求失败')
+        this.$message.success("请求成功")
+        console.log(res);
+
+      }catch(e){
+        console.log(e);
+      }
+    },
+
   },
   created() {
+
     //和风天气插件调用
     window.WIDGET = {
       CONFIG: {
@@ -154,7 +172,14 @@ export default {
       sn.parentNode.insertBefore(c, sn);
       sn.parentNode.insertBefore(s, sn);
     })(document);
+   
   },
+  mounted(){
+    this.contactList()
+    console.log(document.cookie,'cookie');
+  }
+ 
+ 
 };
 </script>
 

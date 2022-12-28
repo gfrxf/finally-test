@@ -11,7 +11,9 @@ import { Message } from 'element-ui';
 //根路径配置
 axios.defaults.baseURL = "http://localhost:8080"
 axios.interceptors.request.use(config => {
-  config.headers.Authorization = window.sessionStorage.getItem("token")
+  const token =window.sessionStorage.getItem("token")
+  config.headers.Authorization = `Bearer ${token}`
+  // console.log(window.sessionStorage.getItem("token"));
   return config
 })
 
