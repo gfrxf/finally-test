@@ -136,9 +136,9 @@
         },
         // 请求数据
         async getUserInfo(){
-          console.log(this.$route.params?.ctId)
+          console.log(this.$route.query?.ctId)
           const { data: res } = await this.$axios.get('/userInfo/detailCt', {
-            ctId:this.$route.params?.ctId
+            ctId:this.$route.query?.ctId
           })
           this.ruleForm.name = res.data.ctName
           this.ruleForm.address = res.data.ctAd 
@@ -166,7 +166,7 @@
           this.$router.push('/home')
         },
         goToEvent(){
-          this.$router.push({path:'/warn',query:{ctId:this.$route.params?.ctId}})
+          this.$router.push({path:'/warn',query:{ctId:this.$route.query?.ctId}})
         }
   
    },
