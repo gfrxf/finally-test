@@ -19,8 +19,9 @@
         v-model="input"
         class="serchinput"
         placeholder="搜索"
+
       ></el-input>
-      <i class="el-icon-search" size="medium"></i>
+      <i class="el-icon-search" @click="searchHandle" size="medium"></i>
       <el-select v-model="value" class="select" placeholder="全部">
         <el-option
           v-for="item in options"
@@ -68,7 +69,7 @@
       </el-table>
     </div>
     <div class="pagination">
-      <el-pagination small layout="prev, pager, next" :total="50">
+      <el-pagination small layout="prev, pager, next" :total="totalCount" background="" @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize"  >
       </el-pagination>
     </div>
   </div>
@@ -100,9 +101,15 @@ export default {
       tableData: [],
       ctId: 1524,
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 2,
       words: "",
       result: {},
+      // 默认显示第几页
+      // currentPage:1,
+      // 总条数，根据接口获取数据长度(注意：这里不能为空)
+      totalCount:1,
+      type:0,
+      ctid:''
     };
   },
   methods: {
@@ -118,7 +125,19 @@ export default {
     toPageWarn() {
       this.$router.push({ path: "/warn", query: { ctId: this.ctId } });
     },
-
+    // 分页切换
+    handleCurrentChange(val){
+      // console.log(val);
+      this.pageNum = val
+      this.contactList()
+    },
+    // 搜索
+    searchHandle(){
+      console.log(this.input,'input');
+      this.words = this.input
+      this.contactList()
+    },
+    // 联系人列表接口
     async contactList() {
       // console.log("concat");
       console.log(this.pageNum, this.pageSize, "concat");
@@ -134,13 +153,36 @@ export default {
         this.$message.success("请求成功");
         console.log(res.data);
         this.tableData = res.data.records;
+        this.totalCount = res.data.total
         // console.log(this.tableData,'table');
       } catch (e) {
         console.log(e);
       }
     },
+    // 屏蔽接口
+    async pingbi(type,id){
+      try {
+        const { data: res } = await this.$axios.get("/userInfo/operation", {
+          params: {
+            type	: type,
+            ctId: id,
+           
+          },
+        });
+        if (res.code != 200) return this.$message.error("请求失败");
+        this.$message.success("请求成功");
+        console.log(res.data);
+        this.tableData = res.data.records;
+        this.totalCount = res.data.total
+        // console.log(this.tableData,'table');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    // 详情按钮
     handleClick1(e) {
-      console.log(e.ctId, "e");
+      // console.log(e.ctId, "e");
+      console.log(e,'e');
       this.$router.push({
         path: "/detailct",
         query: {
@@ -149,7 +191,10 @@ export default {
       });
     },
     handleClick2(e) {
-      console.log(e);
+      // console.log(e);
+      let type = 0 // 0代表屏蔽，ctid用户id
+      this.pingbi(type, e.ctId)
+      this.contactList()
     },
   },
   created() {
